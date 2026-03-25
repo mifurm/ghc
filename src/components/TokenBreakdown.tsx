@@ -22,11 +22,7 @@ const COMPONENT_LABELS: Record<string, string> = {
   reasoningOverhead: 'Reasoning Overhead (%)',
 };
 
-const BAR_COLORS = [
-  'bg-blue-400',
-  'bg-emerald-400',
-  'bg-purple-400',
-];
+const HEADER_COLORS = ['#2b88d8', '#50e6a0', '#c4aeff'];
 
 export function TokenBreakdown({ results }: TokenBreakdownProps) {
   const breakdownKeys = Object.keys(COMPONENT_LABELS);
@@ -35,10 +31,19 @@ export function TokenBreakdown({ results }: TokenBreakdownProps) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-700">
-            <th className="text-left text-gray-400 py-2 pr-4">Component</th>
+          <tr style={{ borderBottom: '1px solid var(--foundry-border)' }}>
+            <th
+              className="text-left py-2 pr-4 text-xs font-medium uppercase tracking-wide"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Component
+            </th>
             {results.map((sol, i) => (
-              <th key={sol.result.label} className={`text-right py-2 px-3 ${BAR_COLORS[i].replace('bg-', 'text-')}`}>
+              <th
+                key={sol.result.label}
+                className="text-right py-2 px-3 text-xs font-semibold"
+                style={{ color: HEADER_COLORS[i] }}
+              >
                 {sol.result.label}
               </th>
             ))}
@@ -53,10 +58,25 @@ export function TokenBreakdown({ results }: TokenBreakdownProps) {
             if (!anyNonZero) return null;
 
             return (
-              <tr key={key} className="border-b border-gray-800 hover:bg-gray-800/50">
-                <td className="text-gray-300 py-2 pr-4">{COMPONENT_LABELS[key]}</td>
+              <tr
+                key={key}
+                style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)')
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = 'transparent')
+                }
+              >
+                <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                  {COMPONENT_LABELS[key]}
+                </td>
                 {values.map((v, i) => (
-                  <td key={i} className="text-right py-2 px-3 text-white font-mono">
+                  <td
+                    key={i}
+                    className="text-right py-2 px-3 font-mono text-sm"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
                     {key === 'reasoningOverhead'
                       ? v > 0
                         ? `+${v}%`

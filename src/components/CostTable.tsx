@@ -11,7 +11,7 @@ interface CostTableProps {
   results: SolutionWithCosts[];
 }
 
-const HEADER_COLORS = ['text-blue-400', 'text-emerald-400', 'text-purple-400'];
+const HEADER_COLORS = ['#2b88d8', '#50e6a0', '#c4aeff'];
 
 export function CostTable({ results }: CostTableProps) {
   // Get all unique model names from any solution
@@ -19,7 +19,9 @@ export function CostTable({ results }: CostTableProps) {
 
   if (modelIds.length === 0) {
     return (
-      <p className="text-gray-400 text-sm">Select at least one model to see cost estimates.</p>
+      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+        Select at least one model to see cost estimates.
+      </p>
     );
   }
 
@@ -27,22 +29,40 @@ export function CostTable({ results }: CostTableProps) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-700">
-            <th className="text-left text-gray-400 py-2 pr-4">Model</th>
+          <tr style={{ borderBottom: '1px solid var(--foundry-border)' }}>
+            <th
+              className="text-left py-2 pr-4 text-xs font-medium uppercase tracking-wide"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Model
+            </th>
             {results.map((sol, i) => (
-              <th key={sol.result.label} className={`text-center py-2 px-2 ${HEADER_COLORS[i]}`} colSpan={2}>
+              <th
+                key={sol.result.label}
+                className="text-center py-2 px-2 text-xs font-semibold"
+                style={{ color: HEADER_COLORS[i] }}
+                colSpan={2}
+              >
                 {sol.result.label}
               </th>
             ))}
           </tr>
-          <tr className="border-b border-gray-700">
-            <th className="text-left text-gray-500 py-1 pr-4 text-xs"></th>
+          <tr style={{ borderBottom: '1px solid var(--foundry-border)' }}>
+            <th className="py-1 pr-4"></th>
             {results.map((sol) => (
               <>
-                <th key={`${sol.result.label}-d`} className="text-right text-gray-500 py-1 px-2 text-xs">
+                <th
+                  key={`${sol.result.label}-d`}
+                  className="text-right py-1 px-2 text-xs font-normal"
+                  style={{ color: 'var(--text-muted)' }}
+                >
                   /day
                 </th>
-                <th key={`${sol.result.label}-m`} className="text-right text-gray-500 py-1 px-2 text-xs">
+                <th
+                  key={`${sol.result.label}-m`}
+                  className="text-right py-1 px-2 text-xs font-normal"
+                  style={{ color: 'var(--text-muted)' }}
+                >
                   /month
                 </th>
               </>
@@ -51,18 +71,35 @@ export function CostTable({ results }: CostTableProps) {
         </thead>
         <tbody>
           {modelIds.map((modelId) => (
-            <tr key={modelId} className="border-b border-gray-800 hover:bg-gray-800/50">
-              <td className="text-gray-300 py-2 pr-4">
+            <tr
+              key={modelId}
+              style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)')
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = 'transparent')
+              }
+            >
+              <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
                 {results[0].costs.find((c) => c.modelId === modelId)?.modelName}
               </td>
               {results.map((sol) => {
                 const cost = sol.costs.find((c) => c.modelId === modelId);
                 return (
                   <>
-                    <td key={`${sol.result.label}-${modelId}-d`} className="text-right py-2 px-2 text-white font-mono">
+                    <td
+                      key={`${sol.result.label}-${modelId}-d`}
+                      className="text-right py-2 px-2 font-mono text-sm"
+                      style={{ color: 'var(--text-primary)' }}
+                    >
                       {cost ? formatCurrency(cost.dailyTotalCost) : '—'}
                     </td>
-                    <td key={`${sol.result.label}-${modelId}-m`} className="text-right py-2 px-2 text-gray-300 font-mono">
+                    <td
+                      key={`${sol.result.label}-${modelId}-m`}
+                      className="text-right py-2 px-2 font-mono text-sm"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
                       {cost ? formatCurrency(cost.monthlyCost) : '—'}
                     </td>
                   </>
