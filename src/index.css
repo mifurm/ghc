@@ -1,2 +1,39 @@
 @import "tailwindcss";
 
+/* ── Microsoft Foundry / Azure AI Foundry Design System ── */
+:root {
+  /* Core Foundry palette */
+  --foundry-bg:          #0f1117;
+  --foundry-surface:     #161b2d;
+  --foundry-surface-2:   #1c2238;
+  --foundry-border:      rgba(255,255,255,0.08);
+  --foundry-border-soft: rgba(255,255,255,0.05);
+
+  /* Brand */
+  --ms-blue:   #0078d4;
+  --ms-blue-h: #106ebe;   /* hover */
+  --ms-blue-2: #2b88d8;   /* lighter accent */
+  --ms-teal:   #00b7c3;
+  --ms-purple: #8764b8;
+
+  /* Text */
+  --text-primary:   #f3f4f6;
+  --text-secondary: #8a8d9f;
+  --text-muted:     #555b73;
+}
+
+html, body, #root {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--foundry-bg);
+  color: var(--text-primary);
+}
+
+/* Scrollbar – Foundry-style slim dark bars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* Foundry glow utility */
+.foundry-glow { box-shadow: 0 0 0 1px var(--ms-blue), 0 0 8px rgba(0,120,212,0.25); }
+

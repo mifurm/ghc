@@ -23,10 +23,13 @@ function NumberInput({
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium text-gray-300 flex items-center gap-1">
+      <label
+        className="text-xs font-medium flex items-center gap-1"
+        style={{ color: 'var(--text-secondary)' }}
+      >
         {label}
         {tooltip && (
-          <span className="text-gray-500 cursor-help" title={tooltip}>
+          <span style={{ color: 'var(--text-muted)' }} className="cursor-help" title={tooltip}>
             ⓘ
           </span>
         )}
@@ -40,7 +43,21 @@ function NumberInput({
           const v = Number(e.target.value);
           if (!isNaN(v)) onChange(v);
         }}
-        className="bg-gray-800 border border-gray-600 rounded px-3 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+        style={{
+          background: 'var(--foundry-surface-2)',
+          border: '1px solid var(--foundry-border)',
+          color: 'var(--text-primary)',
+          borderRadius: '4px',
+        }}
+        className="px-3 py-1.5 text-sm focus:outline-none"
+        onFocus={(e) => {
+          e.currentTarget.style.border = '1px solid var(--ms-blue)';
+          e.currentTarget.style.boxShadow = '0 0 0 1px var(--ms-blue), 0 0 6px rgba(0,120,212,0.2)';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.border = '1px solid var(--foundry-border)';
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       />
     </div>
   );
@@ -89,8 +106,11 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
     <div className="space-y-6">
       {/* Conversation Parameters */}
       <section>
-        <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-3">
-          💬 Conversation
+        <h3
+          className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-2"
+          style={{ color: 'var(--ms-blue-2)' }}
+        >
+          <span style={{ color: 'var(--ms-blue)' }}>●</span> Conversation
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <NumberInput
@@ -140,8 +160,11 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
 
       {/* RAG Parameters */}
       <section>
-        <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-3">
-          📄 RAG Settings
+        <h3
+          className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-2"
+          style={{ color: '#50e6a0' }}
+        >
+          <span style={{ color: '#00b294' }}>●</span> RAG Settings
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <NumberInput
@@ -159,11 +182,30 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
             tooltip="Average size of each retrieved document chunk"
           />
           <div className="col-span-2">
-            <label className="text-sm font-medium text-gray-300">Embedding model</label>
+            <label
+              className="text-xs font-medium block mb-1"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Embedding model
+            </label>
             <select
               value={inputs.rag.embeddingModel}
               onChange={(e) => updateRag('embeddingModel', e.target.value)}
-              className="w-full mt-1 bg-gray-800 border border-gray-600 rounded px-3 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+              style={{
+                background: 'var(--foundry-surface-2)',
+                border: '1px solid var(--foundry-border)',
+                color: 'var(--text-primary)',
+                borderRadius: '4px',
+              }}
+              className="w-full px-3 py-1.5 text-sm focus:outline-none"
+              onFocus={(e) => {
+                e.currentTarget.style.border = '1px solid var(--ms-blue)';
+                e.currentTarget.style.boxShadow = '0 0 0 1px var(--ms-blue), 0 0 6px rgba(0,120,212,0.2)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.border = '1px solid var(--foundry-border)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
               {EMBEDDING_MODELS.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -177,8 +219,11 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
 
       {/* Agentic RAG Parameters */}
       <section>
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-3">
-          🤖 Agentic RAG
+        <h3
+          className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-2"
+          style={{ color: '#c4aeff' }}
+        >
+          <span style={{ color: 'var(--ms-purple)' }}>●</span> Agentic RAG
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <NumberInput
@@ -215,23 +260,38 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
 
       {/* Model Selection */}
       <section>
-        <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-3">
-          🏷️ Models
+        <h3
+          className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-2"
+          style={{ color: '#ffd166' }}
+        >
+          <span style={{ color: '#f7b731' }}>●</span> Models
         </h3>
         <div className="space-y-1.5">
           {LLM_MODELS.map((model) => (
             <label
               key={model.id}
-              className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer hover:text-white"
+              className="flex items-center gap-2 text-sm cursor-pointer rounded px-2 py-1 transition-colors"
+              style={{ color: 'var(--text-secondary)' }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
+                (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = 'transparent';
+                (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
+              }}
             >
               <input
                 type="checkbox"
                 checked={inputs.selectedModels.includes(model.id)}
                 onChange={() => toggleModel(model.id)}
-                className="rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
+                style={{ accentColor: 'var(--ms-blue)' }}
+                className="rounded"
               />
               <span>{model.name}</span>
-              <span className="text-gray-500 text-xs ml-auto">{model.provider}</span>
+              <span className="text-xs ml-auto" style={{ color: 'var(--text-muted)' }}>
+                {model.provider}
+              </span>
             </label>
           ))}
         </div>
@@ -239,8 +299,11 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
 
       {/* Azure PTU Parameters */}
       <section>
-        <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-3">
-          ☁️ Azure PTU
+        <h3
+          className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-2"
+          style={{ color: 'var(--ms-teal)' }}
+        >
+          <span style={{ color: 'var(--ms-teal)' }}>●</span> Azure PTU
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <NumberInput
@@ -262,8 +325,14 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
         </div>
 
         {inputs.ptu.models.map((model, i) => (
-          <div key={model.id} className="mt-4 border-t border-gray-700 pt-3">
-            <h4 className="text-xs font-semibold text-cyan-300 mb-2">{model.name}</h4>
+          <div
+            key={model.id}
+            className="mt-4 pt-3"
+            style={{ borderTop: '1px solid var(--foundry-border)' }}
+          >
+            <h4 className="text-xs font-semibold mb-2" style={{ color: 'var(--ms-teal)' }}>
+              {model.name}
+            </h4>
             <div className="grid grid-cols-2 gap-3">
               <NumberInput
                 label="TPM per PTU"

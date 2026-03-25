@@ -10,7 +10,7 @@ interface PTUComparisonProps {
   results: SolutionWithCosts[];
 }
 
-const HEADER_COLORS = ['text-blue-400', 'text-emerald-400', 'text-purple-400'];
+const HEADER_COLORS = ['#2b88d8', '#50e6a0', '#c4aeff'];
 
 export function PTUComparison({ results }: PTUComparisonProps) {
   // Get PTU models from first result
@@ -29,16 +29,24 @@ export function PTUComparison({ results }: PTUComparisonProps) {
 
         return (
           <div key={modelId}>
-            <h3 className="text-sm font-semibold text-cyan-400 mb-3">{modelName}</h3>
+            <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--ms-teal)' }}>
+              {modelName}
+            </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="text-left text-gray-400 py-2 pr-4">Metric</th>
+                  <tr style={{ borderBottom: '1px solid var(--foundry-border)' }}>
+                    <th
+                      className="text-left py-2 pr-4 text-xs font-medium uppercase tracking-wide"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
+                      Metric
+                    </th>
                     {results.map((sol, i) => (
                       <th
                         key={sol.result.label}
-                        className={`text-right py-2 px-3 ${HEADER_COLORS[i]}`}
+                        className="text-right py-2 px-3 text-xs font-semibold"
+                        style={{ color: HEADER_COLORS[i] }}
                       >
                         {sol.result.label}
                       </th>
@@ -46,99 +54,148 @@ export function PTUComparison({ results }: PTUComparisonProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-gray-800">
-                    <td className="text-gray-300 py-2 pr-4">Peak TPM</td>
+                  <tr style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}>
+                    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                      Peak TPM
+                    </td>
                     {results.map((sol) => {
                       const est = sol.ptuEstimates.find((e) => e.modelId === modelId);
                       return (
-                        <td key={sol.result.label} className="text-right py-2 px-3 text-white font-mono">
+                        <td
+                          key={sol.result.label}
+                          className="text-right py-2 px-3 font-mono text-sm"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
                           {est ? est.requiredTPM.toLocaleString() : '—'}
                         </td>
                       );
                     })}
                   </tr>
-                  <tr className="border-b border-gray-800">
-                    <td className="text-gray-300 py-2 pr-4">PTUs Required</td>
+                  <tr style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}>
+                    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                      PTUs Required
+                    </td>
                     {results.map((sol) => {
                       const est = sol.ptuEstimates.find((e) => e.modelId === modelId);
                       return (
-                        <td key={sol.result.label} className="text-right py-2 px-3 text-white font-mono font-bold">
+                        <td
+                          key={sol.result.label}
+                          className="text-right py-2 px-3 font-mono font-bold text-sm"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
                           {est ? est.requiredPTUs : '—'}
                         </td>
                       );
                     })}
                   </tr>
-                  <tr className="border-b border-gray-800">
-                    <td className="text-gray-300 py-2 pr-4">
-                      PTU Cost /mo
-                      <span className="text-gray-500 text-xs ml-1">(hourly)</span>
+                  <tr style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}>
+                    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                      PTU Cost /mo{' '}
+                      <span className="text-xs ml-1" style={{ color: 'var(--text-muted)' }}>
+                        (hourly)
+                      </span>
                     </td>
                     {results.map((sol) => {
                       const est = sol.ptuEstimates.find((e) => e.modelId === modelId);
                       return (
-                        <td key={sol.result.label} className="text-right py-2 px-3 text-gray-400 font-mono">
+                        <td
+                          key={sol.result.label}
+                          className="text-right py-2 px-3 font-mono text-sm"
+                          style={{ color: 'var(--text-secondary)' }}
+                        >
                           {est ? formatCurrency(est.monthlyPTUCostHourly) : '—'}
                         </td>
                       );
                     })}
                   </tr>
-                  <tr className="border-b border-gray-800">
-                    <td className="text-gray-300 py-2 pr-4">
-                      PTU Cost /mo
-                      <span className="text-gray-500 text-xs ml-1">(committed)</span>
+                  <tr style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}>
+                    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                      PTU Cost /mo{' '}
+                      <span className="text-xs ml-1" style={{ color: 'var(--text-muted)' }}>
+                        (committed)
+                      </span>
                     </td>
                     {results.map((sol) => {
                       const est = sol.ptuEstimates.find((e) => e.modelId === modelId);
                       return (
-                        <td key={sol.result.label} className="text-right py-2 px-3 text-white font-mono">
+                        <td
+                          key={sol.result.label}
+                          className="text-right py-2 px-3 font-mono text-sm"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
                           {est ? formatCurrency(est.monthlyPTUCostCommitted) : '—'}
                         </td>
                       );
                     })}
                   </tr>
-                  <tr className="border-b border-gray-800">
-                    <td className="text-gray-300 py-2 pr-4">Pay-per-token /mo</td>
+                  <tr style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}>
+                    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                      Pay-per-token /mo
+                    </td>
                     {results.map((sol) => {
                       const est = sol.ptuEstimates.find((e) => e.modelId === modelId);
                       return (
-                        <td key={sol.result.label} className="text-right py-2 px-3 text-white font-mono">
+                        <td
+                          key={sol.result.label}
+                          className="text-right py-2 px-3 font-mono text-sm"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
                           {est ? formatCurrency(est.monthlyPayPerTokenCost) : '—'}
                         </td>
                       );
                     })}
                   </tr>
-                  <tr className="border-b border-gray-800">
-                    <td className="text-gray-300 py-2 pr-4">Breakeven Utilization</td>
+                  <tr style={{ borderBottom: '1px solid var(--foundry-border-soft)' }}>
+                    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                      Breakeven Utilization
+                    </td>
                     {results.map((sol) => {
                       const est = sol.ptuEstimates.find((e) => e.modelId === modelId);
                       return (
-                        <td key={sol.result.label} className="text-right py-2 px-3 text-white font-mono">
+                        <td
+                          key={sol.result.label}
+                          className="text-right py-2 px-3 font-mono text-sm"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
                           {est ? `${est.breakevenUtilization}%` : '—'}
                         </td>
                       );
                     })}
                   </tr>
                   <tr>
-                    <td className="text-gray-300 py-2 pr-4">Recommendation</td>
+                    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                      Recommendation
+                    </td>
                     {results.map((sol) => {
                       const est = sol.ptuEstimates.find((e) => e.modelId === modelId);
                       if (!est) {
                         return (
-                          <td key={sol.result.label} className="text-right py-2 px-3">—</td>
+                          <td key={sol.result.label} className="text-right py-2 px-3">
+                            —
+                          </td>
                         );
                       }
                       const isPTU = est.recommendation === 'ptu';
                       return (
                         <td key={sol.result.label} className="text-right py-2 px-3">
                           <span
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                            style={
                               isPTU
-                                ? 'bg-cyan-500/20 text-cyan-300'
-                                : 'bg-amber-500/20 text-amber-300'
-                            }`}
+                                ? {
+                                    background: 'rgba(0,183,195,0.15)',
+                                    color: '#00b7c3',
+                                    border: '1px solid rgba(0,183,195,0.3)',
+                                  }
+                                : {
+                                    background: 'rgba(255,185,0,0.1)',
+                                    color: '#ffc83d',
+                                    border: '1px solid rgba(255,185,0,0.25)',
+                                  }
+                            }
                           >
                             {isPTU ? '☁️ PTU' : '💳 Pay-Go'}
-                            <span className="text-gray-400">
+                            <span style={{ color: 'var(--text-muted)', marginLeft: '0.25rem' }}>
                               saves {formatCurrency(est.savingsPerMonth)}/mo
                             </span>
                           </span>
