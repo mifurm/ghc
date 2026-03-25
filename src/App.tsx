@@ -8,6 +8,7 @@ import { TokenBreakdown } from './components/TokenBreakdown';
 import { ComparisonChart } from './components/ComparisonChart';
 import { CostTable } from './components/CostTable';
 import { PTUComparison } from './components/PTUComparison';
+import { ChatBox } from './components/ChatBox';
 
 function App() {
   const [inputs, setInputs] = useState<CalculatorInputs>(DEFAULT_INPUTS);
@@ -139,6 +140,9 @@ function App() {
           </section>
         </main>
       </div>
+
+      {/* ── Chat assistant ── */}
+      <ChatBox inputs={inputs} results={results} />
     </div>
   );
 }
